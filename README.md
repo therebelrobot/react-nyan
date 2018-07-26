@@ -44,7 +44,7 @@ render(<Demo />, document.getElementById("app"));
 ```
 
 ## Credit
-This was pulled (with love) from [codepen.io/Shmiddty](https://codepen.io/Shmiddty/pen/ezHJD)
+This code was modified (with love) from [codepen.io/Shmiddty](https://codepen.io/Shmiddty/pen/ezHJD)
 
 ## License
 [MIT](https://tldrlegal.com/license/mit-license)
