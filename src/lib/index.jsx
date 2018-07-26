@@ -3,19 +3,66 @@ import { HotKeys } from 'react-hotkeys';
 
 import { compose, withProps, withState, lifecycle } from 'recompose';
 
-import './styles.css';
+const styles = {}
+styles.stage = {
+  display:'block',
+  position:'fixed',
+  zIndex: 9999,
+  left: '50%',
+  top: '50%',
+  transform: 'translateX(-50%) translateY(-50%)',
+  border: 'solid 1px #000',
+}
+
+styles.stageContainer = {
+  display: 'block',
+  position: 'fixed',
+  zIndex: 9998,
+  left: 0,
+  top: 0,
+  width: '100vw',
+  height: '100vh',
+  background: 'linear-gradient( to left, #F44336 6.25%, #E91E63 6.25%, #E91E63 12.5%, #9C27B0 12.5%, #9C27B0 18.75%, #673AB7 18.75%, #673AB7 25%, #3F51B5 25%, #3F51B5 31.25%, #2196F3 31.25%, #2196F3 37.5%, #03A9F4 37.5%, #03A9F4 43.75%, #00BCD4 43.75%, #00BCD4 50%, #009688 50%, #009688 56.25%, #4CAF50 56.25%, #4CAF50 62.5%, #8BC34A 62.5%, #8BC34A 68.75%, #CDDC39 68.75%, #CDDC39 75%, #FFEB3B 75%, #FFEB3B 81.25%, #FFC107 81.25%, #FFC107 87.5%, #FF9800 87.5%, #FF9800 93.75%, #FF5722 93.75%, #FF5722 100%)',
+  animation: 'animatedBackground 7.5s linear infinite',
+}
+styles.stageContainerSpan = {
+  color: 'black',
+  position: 'absolute',
+  bottom: '20px',
+  left: '50%',
+  transform: 'translateX(-50%)',
+  WebkitTouchCallout: 'none', /* iOS Safari */
+    WebkitUserSelect: 'none', /* Safari */
+     khtmlUserSelect: 'none', /* Konqueror HTML */
+       MozUserSelect: 'none', /* Firefox */
+        msUserSelect: 'none', /* Internet Explorer/Edge */
+          userSelect: 'none', /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+const keyframes = `@keyframes animatedBackground {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: -100vw 0;
+  }
+}`
 
 // make sure to inherit style and className to not clobber default values
-export const NyanComponentRender = ({ className = '', ...props }) => (
-  <div className={`stageContainer ${className}`} {...props}>
-    <span>Click to play, ESC to close</span>
-    <canvas className="stage" id="stage" width="400" height="600" />
+export const NyanComponentRender = ({ style = {}, ...props }) => (
+  <div style={{...styles.stageContainer, ...style}} {...props}>
+    <span style={styles.stageContainerSpan}>Click to play, ESC to close</span>
+    <canvas style={styles.stage} className="stage" id="stage" width="400" height="600" />
   </div>
 );
 
 const colors = ['red', 'orange', 'yellow', 'green', 'blue', 'indigo'];
 
 export const componentDidMount = (props) => {
+  // make sure the background animates, yo
+  const styleSheet = document.styleSheets[0];
+  styleSheet.insertRule(keyframes, styleSheet.cssRules.length);
+
   const win = window;
   const polyfill = (cb) => setTimeout(cb, 1000 / 60);
   const animFrame = () => (win.requestAnimationFrame || win.webkitRequestAnimationFrame || polyfill);
@@ -328,7 +375,7 @@ export const nyanWithProps = withProps(({ hotkey, ...props }) => ({
   }
 }));
 
-export const NyanRender = ({keyMap, keyHandlers, shouldShowNyan, ...props }) => (
+export const NyanRender = ({keyMap, keyHandlers, setShouldShowNyan, shouldShowNyan, ...props }) => (
   <HotKeys keyMap={keyMap} focused={true} handlers={keyHandlers} attach={window}>
     {shouldShowNyan && <NyanComponent {...props}/>}
   </HotKeys>

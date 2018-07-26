@@ -1,6 +1,6 @@
 {
   "name": "react-nyan",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Add a secret nyancat/flappy-bird game to your React app! 🌈",
   "main": "lib/index.js",
   "scripts": {
