@@ -3,8 +3,6 @@ import { HotKeys } from 'react-hotkeys';
 
 import { compose, withProps, withState, lifecycle } from 'recompose';
 
-import './styles.css';
-
 // make sure to inherit style and className to not clobber default values
 export const NyanComponentRender = ({ className = '', ...props }) => (
   <div className={`stageContainer ${className}`} {...props}>
